@@ -1,0 +1,109 @@
+Curso practico de React.js
+---------------------------------------------------------------------------------
+
+react es una libreria de javascript para desarrollar interfases de usuario donde solo nos vamos a enfocar en la vista dentro del modelo 'vista controladora'.
+La arquitectura que react propone esta basada en componentes, nosotros trabajaremos en componentes en unidades que nos ayudaran a interceptar todas estas individulizdades para crear aplicaciones .
+
+---------------------------------------------------------------------------------
+JSX 
+
+Hace referencia a javascript y xml 
+
+JSX es una sintaxis que combina JavaScript con XML, agiliza nuestro desarrollo y mejora la legibilidad de nuestro código.
+vamos a poder hacer html dentro de javascript. 
+
+VIRTUAL DOM 
+
+podemos hacer usos del virtual dom para hacer actualizaciones 
+es una gran clave, 
+
+CICLO DE VIDA 
+
+todos los componentes van a tener un ciclo de vida y debe establecerse. 
+desde que se inicializan o se actualizan o mueren dentro de la estructura. 
+cuando un componente no estara disponible se dispone a ser destruido
+todo esto sera clave para ver si necesitamos algo para que nuestra api mejore. 
+
+ESTADO
+
+como vamos a poder mantener una pieza de codigo que nos permitira establecer la comunicación con diferentes estados que va a tener nuestra aplicacion desde el evento que sera desencadenado por alguna accion del usuario, como vamos a almacenar o preservar cierta información. que vamos apoder trasminitr a un componente y como ese componente reaccionara con esa información y como la va  atransmitir a otro componente. los eventos que trabajaremos se desencadenaran desde cualquier accion un click, mover el mouse, poner el mouse en cierto lado de la pagina. 
+
+HOOKS 
+
+es una herramienta donde se engloban muchos de estos recursos es una herramienta que lleva tiempo, como se trabaara con el estado y el ciclo de vida, con un hook se pueden crear elementos para trabajar con el estado a la hora de trabajar con un a api asi como otros elementos que seran claves del proyecto 
+
+
+---------------------------------------------------------------------------------
+Para instalar React y React DOM usamos el comando npm install react react-dom --save. Eso instala automáticamente la última versión de estas tecnologías.
+Si quieres usar otra versión, usamos el símbolo @ y la versión con la que queramos trabajar (por ejemplo, en este curso usaremos React 17, así que la instalación puede realizarse con el comando npm install react@17 react-dom@17 --save)
+
+Iniciar proyecto
+
+Primero se inicia con 'git init' 
+
+despues toca agregar lo que le dara vida al proyecto, es con 'npm init'
+acá realizamos la configuración 
+en entry point => src/index.js
+
+
+ahora toca instalar las dependencias que vamos a usar. => npm install react react-dom
+
+ahora toca crear todas las carpetas claves del proyecto en su direccion adecuada:
+
+-se creara 'src' es donde estara todo el codigo dentro creamos => index.js
+-dentro de 'src' crearemos otra carpeta que se llama 'components' y creamos un archivo 'App.jsx'
+Instalando la extención de 'reactjs snippets' se pueden usar comandos para crear codigo preestablecido mas rápido este nos permitira trabajar con un componente este solo lo llamamos de forma rapida. . Con el comando 'rsc' en el archivo App.jsx podemo escribir un stateless component skeleton (rsc), este creara el codigo import hasta una funcion anonima. 
+
+con reactdom render, vamos a trabajar los elementos 1. la app, 2. donde hara render la app. 
+
+para hacer que la app funcione toca importar los nodos necesarioes en index.js==>
+import React from "react";
+import { ReactDOM } from "react";
+
+ReactDOM.render(<App />,document.getElementById('app'))
+----------------------------------
+Esta es la configuración base de la aPP 
+
+
+
+
+
+-se creara 'public' son elementos que dispondremos cuando este preparado para producción => acá creamos index.html 
+
+***** PARAMOS EN EL VIDEO #5 DEL CURSO PRACTICO DE REACT.JS PARA REALIZAR PRIMERO EL CURSO DE WEBPACK. 
+
+---------------------------------------------------------------------------------
+Configuración de Webpack y Babel 
+instalamos babel con el comando 
+
+npm i @babel/core @babel/preset-env @babel/preset-react
+
+despues instalamos webpack 
+
+npm i webpack webpack-cli webpack-dev-server 
+webpack-cli es para ejecutar comandos desde la consola
+dev-server es para poder ejecutar el proyecto de forma local. 
+
+ahora es necesario instalar los plugins y loaders
+
+npm i babel-loader html-loader html-webpack-plugin
+
+Ahora configuramos dentro del editor de código 
+
+se crea un archivo en la carpeta general => .babelrc 
+
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------

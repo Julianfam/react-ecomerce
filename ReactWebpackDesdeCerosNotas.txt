@@ -45,80 +45,6 @@ y para react vamos a configurar lo siguiente en el documento de App.jsx
 este APP se conecta con el render que se hará en Index.js 
 
 -------------------------------------------------------------------------------
-Crear componentes de html con jsx 
-
-Vamos a crear containers de código html, leído desde archivos .jsx 
-
-primero vamos a crear una carpeta dentro de src que se llamara containers 
-Dentro de esta vamos a crear el primer bloque de código, lo vamos a copiar de un proyecto de html y css, estos html tienen dentro del mismo archivo sus estilos. 
-
-Podemos instalar la extensión ES7+ React/Redux/React-Native snippets   para utilizar comandos para acortar react dentro de visualstudiocode. 
-
-imr => import React from ‘react’;
-rafce = react arrow function state component;
-
-Class en javascript es una palabra reservada, así que cuando vayamos a utilizar html en jsx debemos cambiar class => className.
-Para cambiar todos los class a className seleccionamos un class , ctrl + d  (uno por cada palabra a cambiar )
-
-para traer el codigo html y css vamos primero a crear una carpeta dentro de src llamada containers. 
-dentro traeremos los bloques de codigo en html, pero lo traemos como un documento .jsx.
-
-dentro de la carpeta de 'containers' vamos a crear un 'layout.jsx' el cual va a recibir un hijo el cual sera la parte principal del proyecto.
-dentro de layout.jsx usamos el comando rafce. 
-el div lo modificamos y usamos el comando 'div.layout' (div + nombre del className) para crear un div con className establecido y dentro de este agregamos un hijo {children}.
-
-    import React from 'react'
-
-    const Layout = ({children}) => {
-    return (
-        <div className="Layout">
-            {children}
-        </div>
-    )
-    }
-
-    export default Layout
-
-Vamos a crear un archivo adicional de estilos llamado _vars.scss al cual le vamos a pasar las variables de estilos del proyecto en este caso 
-    :root {
-    --white: #FFFFFF;
-    --black: #000000;
-    --very-light-pink: #C7C7C7;
-    --text-input-field: #F7F7F7;
-    --hospital-green: #ACD9B2;
-    --sm: 14px;
-    --md: 16px;
-    --lg: 18px;
-  }
-de esta forma vamos a llamarlo en los archivos de estilos que necesitemos.
-    
-    @import '_vars';
-
-la aplicación la vamos a ir organizando dentro de src/components/App.jsx, 
-
-        Nota : index.html => index.js => App.jsx => layout.jsx => children<containers>. 
-dentro de App.jsx vamos a modificar el return que da la app y le vamos a agregar el layout con los  hijos  
-
-        import React from 'react';
-        import Layout from '../containers/layout';
-        import '../styles/global.scss';
-
-        const App = () => {
-            return (
-                    <Layout>
-                        <login />
-                    </Layout>
-            );
-        };
-
-        export default App;
-
-tambien se le puede agregar un hijo a login, y lo podemos escribir de la siguiente forma 
-    <login>hijos</login>
-los estilos los vamos a ir agregando dentro de la carpeta styles que se encuentra en src
-
-es necesario hacer un cambio en webpack.config.js, en las reglas vamos a cambiar que cargue solo sass y vamos a aclararle que lea tanto css como scss con el siguiente cambio
-    de 'test: /\.s[ac]ss$/', a => test: /\.(css|scss)$/i,
 
 
 ------------------------------------------
@@ -283,8 +209,202 @@ ahora falta modificar en package.json en la sección de scripts el contenido de 
 
 
 ya está todo listo solo falta probarlo para producción 
+------------------------------------------
+Crear componentes de html con jsx 
+
+Vamos a crear containers de código html, leído desde archivos .jsx 
+
+primero vamos a crear una carpeta dentro de src que se llamara containers 
+Dentro de esta vamos a crear el primer bloque de código, lo vamos a copiar de un proyecto de html y css, estos html tienen dentro del mismo archivo sus estilos. 
+
+Podemos instalar la extensión ES7+ React/Redux/React-Native snippets   para utilizar comandos para acortar react dentro de visualstudiocode. 
+
+imr => import React from ‘react’;
+rafce = react arrow function state component;
+
+Class en javascript es una palabra reservada, así que cuando vayamos a utilizar html en jsx debemos cambiar class => className.
+Para cambiar todos los class a className seleccionamos un class , ctrl + d  (uno por cada palabra a cambiar )
+
+para traer el codigo html y css vamos primero a crear una carpeta dentro de src llamada containers. 
+dentro traeremos los bloques de codigo en html, pero lo traemos como un documento .jsx.
+
+dentro de la carpeta de 'containers' vamos a crear un 'layout.jsx' el cual va a recibir un hijo el cual sera la parte principal del proyecto.
+dentro de layout.jsx usamos el comando rafce. 
+el div lo modificamos y usamos el comando 'div.layout' (div + nombre del className) para crear un div con className establecido y dentro de este agregamos un hijo {children}.
+
+    import React from 'react'
+
+    const Layout = ({children}) => {
+    return (
+        <div className="Layout">
+            {children}
+        </div>
+    )
+    }
+
+    export default Layout
+
+Vamos a crear un archivo adicional de estilos llamado _vars.scss al cual le vamos a pasar las variables de estilos del proyecto en este caso 
+    :root {
+    --white: #FFFFFF;
+    --black: #000000;
+    --very-light-pink: #C7C7C7;
+    --text-input-field: #F7F7F7;
+    --hospital-green: #ACD9B2;
+    --sm: 14px;
+    --md: 16px;
+    --lg: 18px;
+  }
+de esta forma vamos a llamarlo en los archivos de estilos que necesitemos.
+    
+    @import '_vars';
+
+la aplicación la vamos a ir organizando dentro de src/components/App.jsx, 
+
+        Nota : index.html => index.js => App.jsx => layout.jsx => children<containers>. 
+dentro de App.jsx vamos a modificar el return que da la app y le vamos a agregar el layout con los  hijos  
+
+        import React from 'react';
+        import Layout from '../containers/layout';
+        import '../styles/global.scss';
+
+        const App = () => {
+            return (
+                    <Layout>
+                        <login />
+                    </Layout>
+            );
+        };
+
+        export default App;
+
+tambien se le puede agregar un hijo a login, y lo podemos escribir de la siguiente forma 
+    <login>hijos</login>
+los estilos los vamos a ir agregando dentro de la carpeta styles que se encuentra en src
+
+es necesario hacer un cambio en webpack.config.js, en las reglas vamos a cambiar que cargue solo sass y vamos a aclararle que lea tanto css como scss con el siguiente cambio
+    de 'test: /\.s[ac]ss$/', a => test: /\.(css|scss)$/i,
+----------
+React Router dom
+
+Nos va a permitir separar el proyecto 
+
+primero instalamos React Roeater => npm install react-router-dom
+
+Vamos a modificar la estructura y app la vamos a poner en otra carpeta dentro de src llamada routers. 
+
+Dentro del archivo App.jsx vamos a importar los nodos desde react-router-dom, 
+con el siguiente comando 
+
+import { BrowserRouter, Switch, Route, createBrowserRouter } from 'react-router-dom';
+
+el BrowserRouter nos ayudara a encapsular toda la aplicación
+
+vamos a hacer un Switch 
+
+            <BrowserRouter>
+            <Switch>
+                <Layout>
+                    <Route exact path='/' element={home} />
+                    <Route exact path='/login' element={Login} />
+                    <Route exact path='/recovery-password' element={RecoveryPassword} />
+                    <Route path="*" element={<NotFound/>} />
+                    
+                </Layout>
+            </Switch>       
+        </BrowserRouter>
+-----------
+Navegación entre rutas
+Ahora vamos a crear la estructura de paginas, 
+
+vamos a crear una carpeta nueva dentro de src => pages
+
+esta carpeta contendra las paginas del proyecto. 
+dentro de pages vamos a crear los archivos Home.jsx y NotFound.jsx 
+
+dentro de Home.jsx 
+            import React from 'react';
+
+            const Home = () => {
+            return (
+                <div><h1>React Shop</h1></div>
+            )
+            }
+
+            export default Home
+
+dentro de NotFound.jsx
+            import React from 'react'
+
+        const NotFound = () => {
+        return (
+            <div>NotFound, Error 404. </div>
+        )
+        }
+
+        export default NotFound
+
+Dentro de webpack dento de module.exports, y dentro de output agregamos un valos para publicPath
+
+	output: {
+		path: path.resolve(__dirname, 'dist'),
+		filename: 'bundle.js',
+		publicPatch:'/',
+	},
+
+la App.jsx la vamos a dejar configurada de la siguiente forma=>
+
+        import React from 'react';
+        import { BrowserRouter, Route, Routes, } from 'react-router-dom';
+        import Layout from '../containers/layout.jsx';
+        import '../styles/global.scss';
+        import Login from '../containers/login.jsx';
+        import RecoveryPassword from '../containers/RecoveryPassword.jsx';
+        import Home from '../pages/Home.jsx';
+        import NotFound from '../pages/NotFound.jsx';
+        import '../styles/global.scss';
+
+        const App = () => {
+            return ( 
+            
+                <BrowserRouter>
+                        <Layout>
+                            <Routes>
+                            <Route index path="/" element={<Home/>} />
+                            <Route path="/login" element={<Login/>} />
+                            <Route path="/recovery-password" element={<RecoveryPassword/>} />
+                            <Route path="*" element={<NotFound/>} /> 
+                        </Routes> 
+                        </Layout>       
+                </BrowserRouter>
+                    
+            );
+        }
+
+        export default App;
 
 ------------------------------------------
+
+
+ReactDOM.render(<App />,document.getElementById('app'));
+
+
+
+
+
+
+
+------------------------------------------
+------------------------------------------
+------------------------------------------
+------------------------------------------
+
+
+
+
+
+
+
 Deploy del proyecto con React.js
 
 ahora vamos a hacer el deploy en netlify

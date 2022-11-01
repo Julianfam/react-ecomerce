@@ -352,6 +352,13 @@ Dentro de webpack dento de module.exports, y dentro de output agregamos un valos
 		publicPatch:'/',
 	},
 
+y debajo de plugins poner devServer, este ayudara a guiar la aplicación. 
+
+
+        devServer: {
+		historyApiFallback: true,
+        }
+
 la App.jsx la vamos a dejar configurada de la siguiente forma=>
 
         import React from 'react';
@@ -384,16 +391,123 @@ la App.jsx la vamos a dejar configurada de la siguiente forma=>
         export default App;
 
 ------------------------------------------
+Header en todas la rutas, dentro de src en la carpeta de components vamos a crear un archivo llamado header.jsx
+------------------------------------------
+Las carpetas se van a organizar de la siguiente forma dentro de src y van de menor a mayor, o de atomo a organismos
+componentes=> pequeños componentes
+containter => union de pequeños componentes
+Paginas=> union de Containers. 
 
 
-ReactDOM.render(<App />,document.getElementById('app'));
+------------------------------------------
+Tipos de componentes en React: stateful vs. stateless
+
+Statefull
+primero importamos a {useState} from 'react' a la pagina deseada. 
+
+const [name, setName] = useState('Hola');
+y queda de la siguiente forma el ejemplo=>
+
+import React, { useState } from 'react';
+
+const Button = () => {
+    const [name, setName] = useState('Hola Mundo');
+    return (
+        <div>
+            <h1>{name}</h1>
+        </div>
+    )
+}
+;
+ un objeto sin estado =?> 
+
+ import react from 'react';
+ const Button = () => (
+    <div>
+    <h1>buton</>
+    <div>
+ )
+
+------------------------------------------
+Imágenes y alias en Webpack
+
+primero se debe identificar el tipo de archivo de las imagenes que queremos procesar y copiar al proyecto 
+dentro de webpack.config.js vamos a crear unna regla test para que pueda validar esos archivos. agregamos
+            {
+				test: /\.(png|svg|jpg|gif)$/,
+			},
+y con esto nos aseguramos de que nuestras imagenes se procesen de forma adecuada. 
+
+dentro de resolve vamos a crear una regla, y es configurar los alias dentro de esta misma 
+    resolve: {
+        extensions: ['.js','.jsx'],
+        alias: {
+            '
+        }
+    }
+
+
+queda de la siguiente forma resolve: 
+resolve: {
+		extensions: ['.js', '.jsx'],
+		alias: {
+			'@components': path.resolve(__dirname, '/src/components/'),
+			'@containers': path.resolve(__dirname, '/src/containers/'),
+			'@pages': path.resolve(__dirname, '/src/pages/'),
+			'@icons' : path.resolve(__dirname, 'src/assets/icons/'),
+			'@logos' : path.resolve(__dirname, 'src/assets/logos/')
+		}
+	},
+
+------------------------------------------
+React.useState
+
+Se utiliza para cambiar el estado de un objeto por otro. 
+
+Codigo inicial const [cart, setCart] = useState('');
+	const handleClick = () => {
+		setCart('Agregado')
+	}
+
+Codigo final <figure className="figure-click" onClick={handleClick}>
+					<img src={addtocart} alt="" />
+				</figure>
+				{cart}
 
 
 
 
+import React, { useState } from 'react';
+import '../styles/ProductItem.scss';
+
+import addtocart from '@icons/bt_add_to_cart.svg';
+
+const ProductItem = () => {
+	const [cart, setCart] = useState('');
+	const handleClick = () => {
+		setCart('Agregado')
+	}
+	return (
+		<div className="ProductItem">
+			<img src="https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="" />
+			<div className="product-info">
+				<div>
+					<p>$120,000</p>
+					<p>Diadema Gamer</p>
+				</div>
+				<figure className="figure-click" onClick={handleClick}>
+					<img src={addtocart} alt="" />
+				</figure>
+				{cart}
+			</div>
+		</div>
+	);
+}
+
+export default ProductItem;
 
 
-
+------------------------------------------
 ------------------------------------------
 ------------------------------------------
 ------------------------------------------

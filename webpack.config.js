@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { dirname } = require('path');
 
 module.exports = {
 	entry: './src/index.js',
@@ -12,6 +13,14 @@ module.exports = {
 	mode: 'development',
 	resolve: {
 		extensions: ['.js', '.jsx'],
+		alias: {
+			'@components': path.resolve(__dirname, 'src/components/'),
+			'@containers': path.resolve(__dirname, 'src/containers/'),
+			'@pages': path.resolve(__dirname, 'src/pages/'),
+			'@icons' : path.resolve(__dirname, 'src/assets/icons/'),
+			'@logos' : path.resolve(__dirname, 'src/assets/logos/'),
+			'@styles': path.resolve(__dirname, 'src/styles/')
+		}
 	},
 	module: {
 		rules: [
@@ -30,6 +39,7 @@ module.exports = {
                     'sass-loader'
                 ]
             },
+			
 			{
 				test: /\.html$/,
 				use: [
@@ -37,7 +47,11 @@ module.exports = {
 						loader: 'html-loader'
 					}
 				]
-			}
+			},
+			{
+				test: /\.(png|svg|jpg|gif)$/,
+				type: 'asset'
+			},
 		]
 	},
 	plugins: [

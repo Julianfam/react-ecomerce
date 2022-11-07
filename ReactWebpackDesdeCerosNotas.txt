@@ -472,7 +472,7 @@ Codigo inicial const [cart, setCart] = useState('');
 Codigo final <figure className="figure-click" onClick={handleClick}>
 					<img src={addtocart} alt="" />
 				</figure>
-				{cart}
+				{cart} 
 
 
 
@@ -508,7 +508,90 @@ export default ProductItem;
 
 
 ------------------------------------------
+Toggle del menú
+
+vamos a crear la apertura y cierre del menú, para esto necesitamos configurar varios elementos.
+    1. importar => import React , { useState } from 'react';
+    2.Al iniciar el bloque de codigo de jsx al iniciar la funcion declararemos una constante para esta acción. 
+        Dentro del primer braket y el return 
+            const [toggle,setToggle] = useState(false);
+            const handleToggle = () => {
+                setToggle(!toggle);    // este ! ayuda a que cambie de estado, y vuelva al anterior //
+            }
+    3.Ahora toca configurar donde se desea generar el cambio: 
+
+
 ------------------------------------------
+Consumiendo APIS
+
+rapidapi.com central de APIS
+
+en el documento de ProductList.jsx agrergamos primero un llamado a la API 
+const API = 'https://api.escuelajs.co/api/v1/products';
+
+despues se le agrega un estado un estado 
+const ProductList = () => {
+  const [product, setProducts] = useState([]);
+
+y adisionalmente dejaremos configurado un use effect para que este maneje los datos de forma organizada 
+vamos a instalar axios npm install axios
+
+tambien vamos a instalar 'npm i @babel/plugin-transform-runtime'
+
+ahora en el documento de babel vamos a llmar el plugin para que se ejecute correctamente
+    {
+    "presets": [
+        "@babel/preset-env",
+        "@babel/preset-react"
+    ], 
+    "plugins": [
+        "@babel/plugin-transform-runtime"
+    ]
+}
+.
+Es necesario actualizar el index del proyecto por que react 18 ya no funciona con el comando reactDom.render.  
+
+import { createRoot } from 'react-dom/client';
+const container = document.getElementById('app');
+const root = createRoot(container);
+root.render(<App tab= "home" />)
+
+esta es la nueva forma de importar y renderizar la app
+
+ al codigo en Productlist que es el contenedor de la lista de productos se deja de esta forma 
+
+        import React , { useEffect , useState } from 'react';
+        import ProductItem from '@components/ProductItem';
+        import '@styles/ProductList.scss';
+        import axios from 'axios';
+
+        const API = 'https://api.escuelajs.co/api/v1/products';
+
+
+        const ProductList = () => {
+        const [products, setProducts] = useState([]);
+
+        useEffect(async () => {
+            const response = await axios(API);
+            setProducts(response.data);
+            }, [])
+        
+        return (
+            <div><section className="main-container">
+            <div className="ProductList">
+            {products.map (product => (
+                <ProductItem />
+            ))}
+            
+            </div>
+        </section>
+        </div>
+        )
+}
+
+export default ProductList
+
+
 ------------------------------------------
 ------------------------------------------
 ------------------------------------------

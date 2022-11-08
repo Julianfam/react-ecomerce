@@ -593,6 +593,12 @@ export default ProductList
 
 
 ------------------------------------------
+
+Custom Hooks para la tienda
+
+Primero vamos a crear una carpeta dentro de src => 'hooks' 
+y dentro vamos a iniciar un archivo useGetProducts.js  este archivo servira como el primer recibidor de informacion 
+este sera el archivo de donde sacamos cada segmento de informacion que se llegue a solicitar. 
 ------------------------------------------
 ------------------------------------------
 

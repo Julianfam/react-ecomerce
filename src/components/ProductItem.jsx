@@ -3,18 +3,18 @@ import '../styles/ProductItem.scss';
 
 import addtocart from '@icons/bt_add_to_cart.svg';
 
-const ProductItem = () => {
+const ProductItem = ({product}) => {
 	const [cart, setCart] = useState('');
 	const handleClick = () => {
 		setCart('Agregado')
 	}
 	return (
 		<div className="ProductItem">
-			<img src="https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="" />
+			<img src={product.images[0]} alt= {product.title} />
 			<div className="product-info">
 				<div>
-					<p>$120,000</p>
-					<p>Diadema Gamer</p>
+					<p>${product.price}</p>
+					<p>{product.title}</p>
 				</div>
 				<figure className="figure-click" onClick={handleClick}>
 					<img src={addtocart} alt="" />

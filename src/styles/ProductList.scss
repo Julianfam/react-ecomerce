@@ -7,9 +7,11 @@
 	place-content: center;
 	margin: 3em 0 0 0;
 }
-
+.ProductItem:hover {
+	box-shadow: 2px -1px 26px -4px rgba(245,245,0,1);
+}
 @media (max-width: 640px) {
 	.ProductList {
-		grid-template-columns: repeat(auto-fill, 170px);
+		grid-template-columns: repeat(auto-fill, 150px);
 	}
 }

@@ -21,11 +21,10 @@ Ahora crear la estructura del proyecto
 
 Dentro del index.js vamos a llamar react y react-dom, e importamos el componente de app y crearemos el recurso de donde se importará la app, esto para mostrar nuestra app dentro de un archivo html 
 ==>
-        import React from 'react';
-        import ReactDOM from 'react-dom';
-        import App from './components/App';
-
-ReactDOM.render(<App />,document.getElementById('app'));
+       import { createRoot } from 'react-dom/client';
+const container = document.getElementById('app');
+const root = createRoot(container);
+root.render(<App tab= "home" />)
 
 
 Al documento de html que creamos, le creamos una plantilla con el preset de VS => ! y dentro del body ponemos lo siguiente ==>
@@ -48,7 +47,7 @@ este APP se conecta con el render que se hará en Index.js
 
 
 ------------------------------------------
-Configuración de Webpack 5 para React.js
+Configuración de Babel y Webpack 5 para React.js
 
 primero instalamos babel 
     npm i @babel/core @babel/preset-env @babel/preset-react babel-loader -D
@@ -118,14 +117,14 @@ y en la parte de reglas vamos a agregar una nueva para usar el loader =>
 y ahora en el documento de webpack vamos a agregar la sección de plugin y vamos a agregar un nuevo plugin 
     plugins: [
         new HtmlWebpackPlugin({
-            template: './public/index.html,
+            template: './public/index.html',
             filename: './index.html'
         })
     ]
 
 Ahora en el archivo de package.json vamos a crear los nuevos comandos de build y dev 
 
-agregamos el primer script
+agregamos  los siguientes  script
     "start": "webpack serve",
     "build": "webpack --mode production",
     "dev": "webpack --mode development",
@@ -178,7 +177,7 @@ mode: 'development',
 En el modo producción borramos la sección de devserver ya que es solo para desarrollo . 
 
 En el archivo de produccion agregamos las siguientes constantes:
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin);
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const { cleanWebpackPlugin }= require('clean-webpack-plugin');
 
@@ -300,7 +299,7 @@ import { BrowserRouter, Switch, Route, createBrowserRouter } from 'react-router-
 
 el BrowserRouter nos ayudara a encapsular toda la aplicación
 
-vamos a hacer un Switch 
+vamos a hacer un Switch  (esto solo funciona para react 17 < dos temas mas adelante esta la configuración react18)
 
             <BrowserRouter>
             <Switch>
@@ -359,7 +358,7 @@ y debajo de plugins poner devServer, este ayudara a guiar la aplicación.
 		historyApiFallback: true,
         }
 
-la App.jsx la vamos a dejar configurada de la siguiente forma=>
+la App.jsx la vamos a dejar configurada de la siguiente forma REACT18UPDATE=>
 
         import React from 'react';
         import { BrowserRouter, Route, Routes, } from 'react-router-dom';
@@ -597,11 +596,457 @@ export default ProductList
 Custom Hooks para la tienda
 
 Primero vamos a crear una carpeta dentro de src => 'hooks' 
-y dentro vamos a iniciar un archivo useGetProducts.js  este archivo servira como el primer recibidor de informacion 
+y dentro vamos a iniciar un archivo 'useGetProducts.js'  este archivo servira como el primer recibidor de informacion 
 este sera el archivo de donde sacamos cada segmento de informacion que se llegue a solicitar. 
+
+import { useEffect , useState } from 'react';
+import axios from 'axios';
+
+const useGetProducts = (API) => {
+    const [products, setProducts] = useState([]);
+
+    useEffect(async () => {
+        const response = await axios(API);
+        setProducts(response.data);
+        }, []);
+    return products;
+    }
+export default useGetProducts;
+
+despues productlist queda de esta forma
+import React from 'react';
+import ProductItem from '@components/ProductItem';
+import '@styles/ProductList.scss';
+import useGetProducts from '../hooks/useGetProducts';
+
+
+const API = 'https://api.escuelajs.co/api/v1/products?offset=0&limit=14';
+
+
+const ProductList = () => {
+  const products = useGetProducts(API)
+  
+  return (
+    <section className="main-container">
+    <div className="ProductList">
+      {products.map(product => (
+        <ProductItem product={product} key={product.id} />
+      ))}
+      
+    </div>
+  </section>
+
+  )
+}
+
+export default ProductList y product item queda de la siguiente forma 
+
+import React, { useState } from 'react';
+import '../styles/ProductItem.scss';
+
+import addtocart from '@icons/bt_add_to_cart.svg';
+
+const ProductItem = ({product}) => {
+	const [cart, setCart] = useState('');
+	const handleClick = () => {
+		setCart('Agregado')
+	}
+	return (
+		<div className="ProductItem">
+			<img src={product.images[0]} alt= {product.title} />
+			<div className="product-info">
+				<div>
+					<p>${product.price}</p>
+					<p>{product.title}</p>
+				</div>
+				<figure className="figure-click" onClick={handleClick}>
+					<img src={addtocart} alt="" />
+				</figure>
+				{cart}
+			</div>
+		</div>
+	);
+}
+
+export default ProductItem;
+
 ------------------------------------------
+useRef y formularios
+
+Hooks 'useRef', para capturar usuarios de login y sus elementos 
+
+Lo primero vamos a traer useRef 
+
+import React, { useRef } from 'react';
+
+al abrir el corchete agregaremos el llamado a use ref 
+    const form = useRef(null);
+Seguido en cada valor que deseemos recibir o conectar vamos a agregar el comando ref={}
+
+Ahora vamos a crear una funcion que nos va a permit maneajr el summit del formulario, vamos a usar formdata que hace parte de javascript, formdata permitira instancear todos los elementos que se encuentran dentro de un formulario. 
+
+Podemos mandar todo el objeto que se forma con formdata al backend y de esta forma hacerlo mas seguro 
+
+los id del form es necesario cambiarlos por name, vamos a crear esta funcion que llamara los nuevos name
+
+const form = useRef(null);
+
+	const handleSubmit = (event) => {
+		event.preventDefault();
+		const formData = new FormData(form.current);
+		const data = {
+			usename: formData.get('email'),
+			password: formData.get('password')
+		}
+		console.log(data);
+	}
+
+
+y el nuevo form va a quedar de la siguiente forma 
+
+
+	return (
+		<div className="Login">
+			<div className="Login-container">
+				<img src={logo} alt="logo" className="logo" />
+				<form action="/" className="form" ref={form}>
+					<label htmlFor="email" className="label">Email address</label>
+					<input type="text" name="email" placeholder="platzi@example.cm" className="input input-email" />
+					<label htmlFor="password" className="label">Password</label>
+					<input type="password" name="password" placeholder="*********" className="input input-password" />
+					<button
+						onClick={handleSubmit}
+						className="primary-button login-button">
+						Log in
+					</button>
+					<a href="/">Forgot my password</a>
+				</form>
+				<button
+					className="secondary-button signup-button"
+				>
+					Sign up
+				</button>
+			</div>
+		</div >
+	);
+}
+
+el necesario al final del formato configurar la orden del comando handleSubmit, y le ponemos una accion onclick
+
 ------------------------------------------
 
+React Context 
+
+nos permite conectar toda la app por medio de este contexto con esto podremos acceder a un estado establecido. 
+Un ejemplo es que sirve para que la informacion que sale al agregar al carrito de compras se efectue y funcione
+vamos a crear una carpeta en src que se llama 'context', dentro crearemos el archivo AppContext.js, en este archivo es donde va a alojarse la información que vamos cargando. 
+
+en este documento agregaremos el codigo 
+
+import React from 'react';
+
+const Appcontext = React.createContext({});
+
+export default Appcontext;
+
+y dentro de App.jsx que es donde tenemos todo el directorio de paginas de la App vamos a encapsular todo el BrowserRouter entro de <AppContext.Provider value={}>
+
+Así queda el codigo hasta el momento import React from 'react';
+import { BrowserRouter, Route, Routes, } from 'react-router-dom';
+import Layout from '@containers/layout.jsx';
+import Home from '@pages/Home.jsx';
+import Login from '@pages/login.jsx';
+import PasswordRecovery from '@pages/PasswordRecovery';
+import SendEmail from '@pages/SendEmail';
+import NewPassword from '@pages/NewPassword';
+import MyAccount from '@pages/MyAccount';
+import CreateAccount from '@pages/CreateAccount';
+import Checkout from '@pages/Checkout';
+import Orders from '@pages/Orders';
+import '@styles/global.scss';
+import NotFound from '@pages/NotFound.jsx';
+import AppContext from '@context/AppContext';
+
+
+const App = () => {
+    return ( 
+        <AppContext.Provider value ={null}>
+            <BrowserRouter>
+                <Layout>
+                    <Routes>
+                    <Route path="/" element={<Home/>} />
+                    <Route path="/login" element={<Login/>} />
+                    <Route path="/recovery-password" element={<PasswordRecovery/>} />
+                    <Route path="/send-email" element={<SendEmail/>} />
+                    <Route path="/new-password" element={<NewPassword/>} />
+                    <Route path="/account" element={<MyAccount/>} />
+                    <Route path="/signup" element={<CreateAccount/>} />
+                    <Route path="/checkout" element={<Checkout/>} />
+                    <Route path="/orders" element={<Orders/>} />
+                    
+                    <Route path="*" element={<NotFound/>} /> 
+                </Routes> 
+                </Layout>       
+            </BrowserRouter>
+        </AppContext.Provider>    
+    );
+}
+
+Ahora vamos a crear otro custom hook, iniciamos un archivo 'useInitialState.js' y dentro vamos a agregar la logica de como agrega un dato al carro de compra, usaremos useState einicializaremos la logica en const initialState => 
+
+import { usesState } from 'react';
+const initialState = {
+    cart: [],
+}
+const useInitialState = () => {
+    const [state, setState] = useState(initialState);
+    
+    const addToCart = (payload) => {
+        setState ({
+            ...state,
+            cart: [...state.cart, payload]
+        });
+    };
+    return {
+        state,
+        addToCart
+    }
+}
+
+export default useInitialState;
+
+Ahora  en  el archivo 'productitem.jsx' en la seccion mas pequeña que recibe cada producto vamos a agregarle una logica distinta a la que teniamos que usaba useState el codigo queda de la siguiente forma: 
+
+    const ProductItem = ({product}) => {
+	const { addtocart } = useContext(AppContext);
+
+	const handleClick = () => {
+		setCart('Agregado')
+	}
+	return 
+    ...
+
+Ahora dentro de App.jsx vamos a traer esta logica 
+
+primero el import
+
+import useInitialState from '../hooks/useInitialState'; 
+
+App qeda de la siguiente forma 
+
+    import React from 'react';
+    import { BrowserRouter, Route, Routes, } from 'react-router-dom';
+    import Layout from '@containers/layout.jsx';
+    import Home from '@pages/Home.jsx';
+    import Login from '@pages/login.jsx';
+    import PasswordRecovery from '@pages/PasswordRecovery';
+    import SendEmail from '@pages/SendEmail';
+    import NewPassword from '@pages/NewPassword';
+    import MyAccount from '@pages/MyAccount';
+    import CreateAccount from '@pages/CreateAccount';
+    import Checkout from '@pages/Checkout';
+    import Orders from '@pages/Orders';
+    import NotFound from '@pages/NotFound.jsx';
+    import AppContext from '@context/AppContext';
+    import useInitialState from '../hooks/useInitialState'; 
+    import '@styles/global.scss';
+
+    const App = () => {
+        const initialState = useInitialState();
+        return ( 
+            <AppContext.Provider value ={initialState}>
+                <BrowserRouter>
+                    <Layout>
+                        <Routes>
+                        <Route path="/" element={<Home/>} />
+                        <Route path="/login" element={<Login/>} />
+                        <Route path="/recovery-password" element={<PasswordRecovery/>} />
+                        <Route path="/send-email" element={<SendEmail/>} />
+                        <Route path="/new-password" element={<NewPassword/>} />
+                        <Route path="/account" element={<MyAccount/>} />
+                        <Route path="/signup" element={<CreateAccount/>} />
+                        <Route path="/checkout" element={<Checkout/>} />
+                        <Route path="/orders" element={<Orders/>} />
+                        
+                        <Route path="*" element={<NotFound/>} /> 
+                    </Routes> 
+                    </Layout>       
+                </BrowserRouter>
+            </AppContext.Provider>    
+        );
+    }
+
+    export default App;
+
+we also modifie ProductItem.jsx AppCOntext.js useInitialState.js 
+
+El documento de ProductItem.jsx queda de la siguiente forma. 
+import React, { useContext } from 'react';
+import '@styles/ProductItem.scss';
+import AppContext from '../context/AppContext';
+import addToCartImage from '@icons/bt_add_to_cart.svg';
+
+const ProductItem = ({product}) => {
+	const { addToCart } = useContext(AppContext);
+
+	const handleClick = item => {
+		addToCart(item)
+	}
+	return (
+		<div className="ProductItem">
+			<img src={product.images[0]} alt= {product.title} />
+			<div className="product-info">
+				<div>
+					<p>${product.price}</p>
+					<p>{product.title}</p>
+				</div>
+				<figure className="figure-click" onClick={handleClick(product)}>
+					<img src={addToCartImage} alt="Add to cart" />
+				</figure>
+			</div>
+		</div>
+	);
+}
+
+export default ProductItem;
+
+
+
+------------------------------------------
+
+Terminando el carrito de compra
+
+ahora vamos a validar que la información quede conectada, vamos a ver que hasta un item sea agregado y que hasta el header reciba este item. 
+
+Vamos a conectar el numero dentro de header.jsx.
+de esta forma ya traemos al Appcontext con la información actualizada
+    import AppContext from '../context/' 
+    import { useContext } from 'react';
+
+Ahora creamos una constante dentro del contenido de header 
+
+    const { state } = useContext(AppContext);
+
+con esto traemos el AppContext global, y lo convertimos en useContext y { state }
+
+ahora vamos a modificar el dos que teniamos para diseño, vamos a generar un codigo que interactue con la cantidad de objetos que contenga el carrito de compra dentro del AppContext 
+cambiamos de <div>2</div> a => 
+<div>{state.cart.length > 0 ?  state.cart.lenght : null }</div>
+Se va a cambiar que el div que contiene el circulo verde, solo se activara cuando haya un objeto en el carrito de compras para esto dentro de la funcion de traer el No de objetos en el carrito, vamos a anexarle html para que pueda controlar esta objeto. 
+
+Queda de la siguiente forma 
+
+{state.cart.length > 0 ? <div>${state.cart.lenght}</div> : null }
+
+así el circulo asignado al div solo se activara en el¿se momento 
+
+en product item tube que hacer una correccion en el codigo lo dejo completo para comparar hasta este punto 
+
+                import React, { useContext } from 'react';
+                import '@styles/ProductItem.scss';
+                import AppContext from '../context/AppContext';
+                import addToCartImage from '@icons/bt_add_to_cart.svg';
+
+                const ProductItem = ({ product }) => {
+                    const { addToCart } = useContext(AppContext);
+
+                    const handleClick = item => {
+                        addToCart(item)
+                    }
+                    return (
+                        <div className="ProductItem">
+                            <img src={product.images[0]} alt= {product.title} />
+                            <div className="product-info">
+                                <div>
+                                    <p>${product.price}</p>
+                                    <p>{product.title}</p>
+                                </div>
+                                <figure className="figure-click" onClick = { () => handleClick(product)}>
+                                    <img src={addToCartImage} alt="Add to cart" />
+                                </figure>
+                            </div>
+                        </div>
+                    );
+                }
+
+                export default ProductItem;
+
+
+
+------------------------------------------
+
+EN orden de compra vamos a agregar la informacipon y la vamos  a conectar con el AppContext, tambien hay una seccion cuando llamamos a los items dentro order item que debemos hacer de forma distinta y es el llamado al item id, para que este en ningun momento llegue a tener un problema con el id solictiado en otras secciones, vamos a asignarle un nombre adicional a este ID dentro de esta seccion 
+
+así queda Myorder.jsx con el llamado de los items que tenemos agregados en el AppContext
+
+import React ,  { useState , useContext }  from 'react';
+import OrderItem from '../components/OrderItem';
+import '../styles/MyOrder.scss';
+import AppContext from '../context/AppContext';
+import iconFlechita from '@icons/flechita.svg'
+
+
+const MyOrder = () => {
+	const { state } = useContext(AppContext);
+
+  	return (
+   		 <aside className="MyOrder">
+			<div className="title-container">
+				<img src= {iconFlechita} alt="arrow" />
+				<p className="title">My order</p>
+			</div>
+			<div className="my-order-content">
+				{state.cart.map(product  => (
+					<OrderItem product={product} key={`orderItem-${product.id}`} /> 
+				))}			
+				
+				<div className="order">
+					<p>
+						<span>Total</span>
+					</p>
+					<p>$560.00</p>
+				</div>
+				<button className="primary-button">
+					Checkout
+				</button>
+			</div>
+		</aside>
+  )
+}
+
+export default MyOrder
+------------------------------------------
+Suma total del carrito de compra 
+
+Primero creamos una constante para la suma sumTotal y dentro de ella creamos una funcion reducer la cual va a sumar todos los valpres ubicados dentro de precio 
+
+const sumTotal = ( ) => {
+		const reducer = (accumalator, currentValue) => accumalator + currentValue.price;
+		const sum = state.cart.reduce(reducer, 0);
+		return sum;
+	}
+
+
+ya despues simplemente la llamamos como funcion y obtenemos la suma automatica con cada producto que se sume 
+
+<p>${sumTotal()}</p>
+------------------------------------------
+Eliminar productos del carrito de compras
+
+Logica que nos ayudara a eliminar un elemento del carrito 
+
+primero tenemos que agregar una configuración adicional en initialState : 
+
+
+------------------------------------------
+------------------------------------------
+DEPLOY TO GITHUB PAGES by Jameslves
+
+investigar versel beroku 
+Nos permitira desplegar un proyecto dentro de un servidor en linea y de esta forma probarlo y tenerlo listo para subirlo a cualquier dominio 
+
+dentro del market place de github 
+------------------------------------------
 
 
 
@@ -617,3 +1062,4 @@ y lo subimos, corregir errores si es necesario, y si no, ya estará el sitio liv
 
 ------------------------------------------
 
+ 

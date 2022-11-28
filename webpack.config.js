@@ -19,7 +19,9 @@ module.exports = {
 			'@pages': path.resolve(__dirname, 'src/pages/'),
 			'@icons' : path.resolve(__dirname, 'src/assets/icons/'),
 			'@logos' : path.resolve(__dirname, 'src/assets/logos/'),
-			'@styles': path.resolve(__dirname, 'src/styles/')
+			'@styles': path.resolve(__dirname, 'src/styles/'),
+			'@context': path.resolve(__dirname, 'src/context/'),
+			'@hooks': path.resolve(__dirname, 'src/hooks/')
 		}
 	},
 	module: {
@@ -65,10 +67,8 @@ module.exports = {
 	],
     devServer: {
 		historyApiFallback: true,
-        // static:{
-        //     directory: path.join(__dirname, 'dist')
-        // },                
-        // port: 3006,
+                 
+        port: 8080,
 
 
     }

@@ -45,9 +45,7 @@ const Footer = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-8 col-sm-6 col-xs-12">
-            <p className="copyright-text">Copyright  2022 Todos los Derechos reservados  
-         <a href="#"> Julian Andrade</a>.
-            </p>
+          
           </div>
 
           <div className="col-md-4 col-sm-6 col-xs-12">
@@ -58,10 +56,13 @@ const Footer = () => {
               <li><a className="linkedin test" href={facebook}><img src={facebook} alt="FacebookIcon" /><i className="fa fa-linkedin"></i></a></li>   
             </ul>
           </div>
-
+          
           
         </div>
       </div>
+      <p className="copyright-text">Copyright  2022 Todos los Derechos reservados  
+         <a href="#">   @Julian Andrade</a>.
+            </p>
 </footer>
   )
 }

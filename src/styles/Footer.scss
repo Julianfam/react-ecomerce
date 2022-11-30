@@ -6,6 +6,9 @@
   line-height: 24px;
   color:#737373;
   margin-top: 60px;
+  height: auto;
+  width: auto;
+  ;
 }
 .site-footer .container {
     padding-top: 3px;
@@ -14,30 +17,34 @@
     margin-left: auto;
     display: grid;
     height: 300px;
+    position: relative;
     
 }
 .site-footer .container .row {
-    display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
+    display: flex;
+    flex-direction: column;
     justify-items: center;
     align-items: center;
 
 }
+.site-footer .copyright-text {
+   color: red($color: #000000);
+}
 @media ( min-width: 600px) {
 .site-footer {
     width: auto;
+    
 }
 
 .site-footer .container .row {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr; 
-    grid-template-rows: auto;
     justify-items: center;
     align-items: center;
 }
-    
-    
+        
 }
+
 .site-footer hr
 {
   border-top-color:#bbb;

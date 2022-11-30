@@ -6,7 +6,7 @@ import Login from '@pages/login.jsx';
 import PasswordRecovery from '@pages/PasswordRecovery';
 import SendEmail from '@pages/SendEmail';
 import NewPassword from '@pages/NewPassword';
-import MyAccount from '@pages/MyAccount';
+import Myaccount from '@pages/Myaccount';
 import CreateAccount from '@pages/CreateAccount';
 import Checkout from '@pages/Checkout';
 import Orders from '@pages/Orders';

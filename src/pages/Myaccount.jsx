@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/Myaccount.scss';
 
-const Myaccount = () => {
+const MyAccount = () => {
   return (
     <div class="login">
     <div class="form-container">
@@ -27,4 +27,4 @@ const Myaccount = () => {
 }
 
 
-export default Myaccount
+export default MyAccount

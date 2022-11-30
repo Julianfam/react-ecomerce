@@ -27,7 +27,7 @@ const App = () => {
                     <Route path="/recovery-password" element={<PasswordRecovery/>} />
                     <Route path="/send-email" element={<SendEmail/>} />
                     <Route path="/new-password" element={<NewPassword/>} />
-                    <Route path="/myaccount" element={<MyAccount/>} />
+                    <Route path="/myaccount" element={<Myaccount/>} />
                     <Route path="/signup" element={<CreateAccount/>} />
                     <Route path="/checkout" element={<Checkout/>} />
                     <Route path="/orders" element={<Orders/>} />
